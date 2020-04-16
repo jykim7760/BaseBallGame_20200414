@@ -10,6 +10,8 @@ import kr.tjeit.baseballgame_20200414.datas.Chat
 
 class MainActivity : BaseActivity() {
 
+    var tryCount = 0 //정답시도횟수 변수
+
 //    문제 숫자 세자리가 담길 ArrayList
     val computerNumbers = ArrayList<Int>()
 
@@ -83,12 +85,14 @@ class MainActivity : BaseActivity() {
 
     }
 
-    fun checkStrikeAndBall(inputStr : String){
+
+
+    fun checkStrikeAndBall(inputStr : String) {
 
         val inputNumArr = ArrayList<Int>()
 
         inputNumArr.add(inputStr.toInt() / 100) //0번칸 381 -> 3.81 / 100 - 3
-        inputNumArr.add(inputStr.toInt()/10%10) //1번칸 381 -> -> 381 / 10 % 10
+        inputNumArr.add(inputStr.toInt() / 10 % 10) //1번칸 381 -> -> 381 / 10 % 10
         inputNumArr.add(inputStr.toInt() % 10) //2번칸 381 -> 381 % 10 - 1
 
 //        inputNumArr / computerNumbers 를 비교 / 몇s 몇b
@@ -96,16 +100,15 @@ class MainActivity : BaseActivity() {
         var ballCount = 0
 
 //        사용자 입력배열을 다루는 index : i
-        for (i in 0..2){
+        for (i in 0..2) {
 //            컴퓨터 입력값을 다루는 index : j
-            for (j in 0..2){
+            for (j in 0..2) {
 //                숫자가같은지
-                if (computerNumbers.get(j) == inputNumArr.get(i)){
+                if (computerNumbers.get(j) == inputNumArr.get(i)) {
 //                    위치까지 -> 같으면 s++, 다르면 B++
-                    if (i==j){
+                    if (i == j) {
                         strikeCount++
-                    }
-                    else{
+                    } else {
                         ballCount++
 
                     }
@@ -114,23 +117,35 @@ class MainActivity : BaseActivity() {
             }
         }
 //총 몇개의 s/b 인지 담기계 됨
-        chatings.add(Chat("${strikeCount}S ${ballCount}B 입니다" ))
+        chatings.add(Chat("${strikeCount}S ${ballCount}B 입니다", "user"))
         mChatAdapter?.notifyDataSetChanged()
 
 
 
-    }
+        if (strikeCount == 3) {
+            chatings.add(Chat("축하", "computer"))
+            mChatAdapter?.notifyDataSetChanged()
+
+//            몇번만에 맞춘지
+            if (strikeCount == 3) {
+                chatings.add(Chat("${tryCount}회 만에 맞춤", "computer"))
+                mChatAdapter?.notifyDataSetChanged()
 
 
-    override fun setValues() {
+            }
 
-        chatings.add(Chat("숫자 야구게임에 오신걸 환영합니다.", "COMPUTER"))
-        chatings.add(Chat("세자리 숫자를 맞춰주세요.", "COMPUTER"))
-        chatings.add(Chat("중복된 숫자는 없고, 0도 사용되지 않습니다.", "COMPUTER"))
+        }
 
-        mChatAdapter = ChatAdapter(mContext, R.layout.chat_list_item, chatings)
-        chatListView.adapter = mChatAdapter
 
-    }
+        override fun setValues() {
+
+            chatings.add(Chat("숫자 야구게임에 오신걸 환영합니다.", "COMPUTER"))
+            chatings.add(Chat("세자리 숫자를 맞춰주세요.", "COMPUTER"))
+            chatings.add(Chat("중복된 숫자는 없고, 0도 사용되지 않습니다.", "COMPUTER"))
+
+            mChatAdapter = ChatAdapter(mContext, R.layout.chat_list_item, chatings)
+            chatListView.adapter = mChatAdapter
+
+        }
 
 }
