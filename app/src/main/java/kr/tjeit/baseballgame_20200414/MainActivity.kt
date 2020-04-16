@@ -60,6 +60,9 @@ class MainActivity : BaseActivity() {
 
     }
 
+
+
+
     override fun setupEvents() {
 
         okBtn.setOnClickListener {
@@ -79,6 +82,45 @@ class MainActivity : BaseActivity() {
         }
 
     }
+
+    fun checkStrikeAndBall(inputStr : String){
+
+        val inputNumArr = ArrayList<Int>()
+
+        inputNumArr.add(inputStr.toInt() / 100) //0번칸 381 -> 3.81 / 100 - 3
+        inputNumArr.add(inputStr.toInt()/10%10) //1번칸 381 -> -> 381 / 10 % 10
+        inputNumArr.add(inputStr.toInt() % 10) //2번칸 381 -> 381 % 10 - 1
+
+//        inputNumArr / computerNumbers 를 비교 / 몇s 몇b
+        var strikeCount = 0
+        var ballCount = 0
+
+//        사용자 입력배열을 다루는 index : i
+        for (i in 0..2){
+//            컴퓨터 입력값을 다루는 index : j
+            for (j in 0..2){
+//                숫자가같은지
+                if (computerNumbers.get(j) == inputNumArr.get(i)){
+//                    위치까지 -> 같으면 s++, 다르면 B++
+                    if (i==j){
+                        strikeCount++
+                    }
+                    else{
+                        ballCount++
+
+                    }
+
+                }
+            }
+        }
+//총 몇개의 s/b 인지 담기계 됨
+        chatings.add(Chat("${strikeCount}S ${ballCount}B 입니다" ))
+        mChatAdapter?.notifyDataSetChanged()
+
+
+
+    }
+
 
     override fun setValues() {
 
