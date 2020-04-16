@@ -2,6 +2,7 @@ package kr.tjeit.baseballgame_20200414
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -127,10 +128,13 @@ class MainActivity : BaseActivity() {
             mChatAdapter?.notifyDataSetChanged()
 
 //            몇번만에 맞춘지
+
+Handler().postDelayed({
             if (strikeCount == 3) {
                 chatings.add(Chat("${tryCount}회 만에 맞춤", "computer"))
                 mChatAdapter?.notifyDataSetChanged()
 
+            }}, 1500)
 
             }
 
